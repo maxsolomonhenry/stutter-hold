@@ -21,6 +21,12 @@
       </GROUP>
     </GROUP>
     <GROUP id="{1E35E035-2350-6062-64F3-975A76DE3378}" name="Source">
+      <GROUP id="{01540FED-D7E5-3E51-8542-720BD5A451E8}" name="StutterHoldProcessor">
+        <FILE id="f2Pke8" name="StutterHoldProcessor.cpp" compile="1" resource="0"
+              file="Source/StutterHoldProcessor/StutterHoldProcessor.cpp"/>
+        <FILE id="tDpeWp" name="StutterHoldProcessor.h" compile="0" resource="0"
+              file="Source/StutterHoldProcessor/StutterHoldProcessor.h"/>
+      </GROUP>
       <GROUP id="{98BDFA33-D09C-1DE8-AA13-7CDBFFB5B153}" name="PhaseVocodeur">
         <FILE id="jZIe3W" name="PhaseVocodeur.cpp" compile="1" resource="0"
               file="Source/PhaseVocodeur/PhaseVocodeur.cpp"/>
