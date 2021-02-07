@@ -5,57 +5,19 @@
   <MAINGROUP id="MRSNxf" name="stutterhold">
     <GROUP id="{DF066A3C-B3C0-527D-BF3C-3681EB23BA2B}" name="Libraries">
       <GROUP id="{2A4AE95E-127B-0216-5701-6975D63C5D1E}" name="kiss_fft130">
-        <GROUP id="{A0B000A8-9DCE-AD7F-A10E-6220EA6B4461}" name="LICENSES">
-          <FILE id="DpJ3UO" name="BSD-3-Clause" compile="0" resource="1" file="Libraries/kiss_fft130/LICENSES/BSD-3-Clause"/>
-          <FILE id="C7RBXJ" name="Unlicense" compile="0" resource="1" file="Libraries/kiss_fft130/LICENSES/Unlicense"/>
-        </GROUP>
-        <GROUP id="{2F5E4467-76AE-AE0F-AF31-53F1C78278F0}" name="test">
-          <FILE id="hAC2Il" name="benchfftw.c" compile="1" resource="0" file="Libraries/kiss_fft130/test/benchfftw.c"/>
-          <FILE id="SpMOYF" name="benchkiss.c" compile="1" resource="0" file="Libraries/kiss_fft130/test/benchkiss.c"/>
-          <FILE id="b2bg1r" name="CMakeLists.txt" compile="0" resource="1" file="Libraries/kiss_fft130/test/CMakeLists.txt"/>
-          <FILE id="EOdDLy" name="doit.c" compile="1" resource="0" file="Libraries/kiss_fft130/test/doit.c"/>
-          <FILE id="tSIh1P" name="Makefile" compile="0" resource="1" file="Libraries/kiss_fft130/test/Makefile"/>
-          <FILE id="Aneawv" name="pstats.c" compile="1" resource="0" file="Libraries/kiss_fft130/test/pstats.c"/>
-          <FILE id="Yt0hHP" name="pstats.h" compile="0" resource="0" file="Libraries/kiss_fft130/test/pstats.h"/>
-          <FILE id="dca6Ny" name="test_real.c" compile="1" resource="0" file="Libraries/kiss_fft130/test/test_real.c"/>
-          <FILE id="QUqqG8" name="test_simd.c" compile="1" resource="0" file="Libraries/kiss_fft130/test/test_simd.c"/>
-          <FILE id="T1kviq" name="testcpp.cc" compile="1" resource="0" file="Libraries/kiss_fft130/test/testcpp.cc"/>
-          <FILE id="fNuIR7" name="testkiss.py" compile="0" resource="1" file="Libraries/kiss_fft130/test/testkiss.py"/>
-          <FILE id="Vw6OTu" name="twotonetest.c" compile="1" resource="0" file="Libraries/kiss_fft130/test/twotonetest.c"/>
-        </GROUP>
-        <GROUP id="{F43062E8-DD27-91A0-E6CF-3013902DE372}" name="tools">
-          <FILE id="AFWU1r" name="CMakeLists.txt" compile="0" resource="1" file="Libraries/kiss_fft130/tools/CMakeLists.txt"/>
-          <FILE id="JI3fQi" name="fftutil.c" compile="1" resource="0" file="Libraries/kiss_fft130/tools/fftutil.c"/>
-          <FILE id="oNymYf" name="kfc.c" compile="1" resource="0" file="Libraries/kiss_fft130/tools/kfc.c"/>
-          <FILE id="PWiSyO" name="kfc.h" compile="0" resource="0" file="Libraries/kiss_fft130/tools/kfc.h"/>
-          <FILE id="zqODkL" name="kiss_fastfir.c" compile="1" resource="0" file="Libraries/kiss_fft130/tools/kiss_fastfir.c"/>
-          <FILE id="zRUCYv" name="kiss_fftnd.c" compile="1" resource="0" file="Libraries/kiss_fft130/tools/kiss_fftnd.c"/>
-          <FILE id="Ev6MsF" name="kiss_fftnd.h" compile="0" resource="0" file="Libraries/kiss_fft130/tools/kiss_fftnd.h"/>
-          <FILE id="SA2cDv" name="kiss_fftndr.c" compile="1" resource="0" file="Libraries/kiss_fft130/tools/kiss_fftndr.c"/>
-          <FILE id="g2bcFM" name="kiss_fftndr.h" compile="0" resource="0" file="Libraries/kiss_fft130/tools/kiss_fftndr.h"/>
-          <FILE id="wh1MtG" name="kiss_fftr.c" compile="1" resource="0" file="Libraries/kiss_fft130/tools/kiss_fftr.c"/>
-          <FILE id="oJChQH" name="kiss_fftr.h" compile="0" resource="0" file="Libraries/kiss_fft130/tools/kiss_fftr.h"/>
-          <FILE id="lDiplz" name="Makefile" compile="0" resource="1" file="Libraries/kiss_fft130/tools/Makefile"/>
-          <FILE id="iLjK2k" name="psdpng.c" compile="1" resource="0" file="Libraries/kiss_fft130/tools/psdpng.c"/>
-        </GROUP>
-        <FILE id="yGFEtB" name="_kiss_fft_guts.h" compile="0" resource="0"
+        <GROUP id="{E2EECABD-26C2-4D5F-0AC9-54D68AEFB73E}" name="test"/>
+        <GROUP id="{D60219BE-9B1C-00BC-1660-1262FF9A4FCE}" name="tools"/>
+        <FILE id="rPhlxa" name="_kiss_fft_guts.h" compile="0" resource="0"
               file="Libraries/kiss_fft130/_kiss_fft_guts.h"/>
-        <FILE id="q6Mb1l" name="CHANGELOG" compile="0" resource="1" file="Libraries/kiss_fft130/CHANGELOG"/>
-        <FILE id="i5mD7E" name="CMakeLists.txt" compile="0" resource="1" file="Libraries/kiss_fft130/CMakeLists.txt"/>
-        <FILE id="RSfKxu" name="COPYING" compile="0" resource="1" file="Libraries/kiss_fft130/COPYING"/>
-        <FILE id="DJ6U0I" name="kiss_fft.c" compile="1" resource="0" file="Libraries/kiss_fft130/kiss_fft.c"/>
-        <FILE id="q4SbKH" name="kiss_fft.h" compile="0" resource="0" file="Libraries/kiss_fft130/kiss_fft.h"/>
-        <FILE id="yGVa2V" name="kiss_fft_log.h" compile="0" resource="0" file="Libraries/kiss_fft130/kiss_fft_log.h"/>
-        <FILE id="V2Y0GZ" name="kissfft-config.cmake.in" compile="0" resource="1"
-              file="Libraries/kiss_fft130/kissfft-config.cmake.in"/>
-        <FILE id="y1NTpK" name="kissfft.hh" compile="0" resource="0" file="Libraries/kiss_fft130/kissfft.hh"/>
-        <FILE id="G7EcEK" name="kissfft.pc.in" compile="0" resource="1" file="Libraries/kiss_fft130/kissfft.pc.in"/>
-        <FILE id="ptz7uM" name="kissfft_i32.hh" compile="0" resource="0" file="Libraries/kiss_fft130/kissfft_i32.hh"/>
-        <FILE id="AD2EkK" name="Makefile" compile="0" resource="1" file="Libraries/kiss_fft130/Makefile"/>
-        <FILE id="dggmDV" name="README" compile="0" resource="1" file="Libraries/kiss_fft130/README"/>
-        <FILE id="F20iW0" name="README.md" compile="0" resource="1" file="Libraries/kiss_fft130/README.md"/>
-        <FILE id="uLduzy" name="README.simd" compile="0" resource="1" file="Libraries/kiss_fft130/README.simd"/>
-        <FILE id="vMJ8q7" name="TIPS" compile="0" resource="1" file="Libraries/kiss_fft130/TIPS"/>
+        <FILE id="b4c1br" name="CHANGELOG" compile="0" resource="1" file="Libraries/kiss_fft130/CHANGELOG"/>
+        <FILE id="V2weJU" name="COPYING" compile="0" resource="1" file="Libraries/kiss_fft130/COPYING"/>
+        <FILE id="SLmynC" name="kiss_fft.c" compile="1" resource="0" file="Libraries/kiss_fft130/kiss_fft.c"/>
+        <FILE id="AiBpU6" name="kiss_fft.h" compile="0" resource="0" file="Libraries/kiss_fft130/kiss_fft.h"/>
+        <FILE id="YlHi07" name="kissfft.hh" compile="0" resource="0" file="Libraries/kiss_fft130/kissfft.hh"/>
+        <FILE id="scLo7E" name="Makefile" compile="0" resource="1" file="Libraries/kiss_fft130/Makefile"/>
+        <FILE id="gUzhF1" name="README" compile="0" resource="1" file="Libraries/kiss_fft130/README"/>
+        <FILE id="Zj4YvM" name="README.simd" compile="0" resource="1" file="Libraries/kiss_fft130/README.simd"/>
+        <FILE id="pQcgoF" name="TIPS" compile="0" resource="1" file="Libraries/kiss_fft130/TIPS"/>
       </GROUP>
     </GROUP>
     <GROUP id="{1E35E035-2350-6062-64F3-975A76DE3378}" name="Source">
