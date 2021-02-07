@@ -26,7 +26,8 @@
 #include <math.h>
 #include <JuceHeader.h>
 /* fft library */
-#include "../kiss_fft130/kiss_fft.h"
+//#include "../kiss_fft130/kiss_fft.h"
+#include "../Libraries/kiss_fft130/kiss_fft.h"
 
 #define DEFAULT_FRAME_SIZE 256
 #define DEFAULT_HOP_SIZE 128
