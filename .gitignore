@@ -1,3 +1,11 @@
+# Directories
+Libraries/
+JuceLibraryCode/
+Builds/
+
+# Personal Business
+.DS_Store
+
 # Prerequisites
 *.d
 
