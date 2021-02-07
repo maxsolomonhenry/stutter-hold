@@ -1,2 +1,2 @@
-# stutter-hold
-Porting Stutter + Hold to JUCE
+# Stutter + Hold
+Learning cpp by porting our previous plugin Stutter + Hold to JUCE.
