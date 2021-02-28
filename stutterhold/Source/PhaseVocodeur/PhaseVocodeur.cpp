@@ -8,7 +8,8 @@
  By `push`ing into this class, the input is distributed among overlapping buffers,
  this permits a frequency-domain processing and reconstruction.
  
- Sound comes out via -- TODO: (?)
+ Sound goes in via `push(float)`
+ Sound comes out via `read_sum()`
  
  You can specify your own processing by overwriting the (?) method.
  
@@ -17,16 +18,12 @@
 
 #include "PhaseVocodeur.h"
 
-// @JulianArmandVanasse: Where does the sound come out?
-
 /*
  ==============================================================================
     Constructors
  ==============================================================================
 */
 
-// @JulianArmandVanasse: Why is there a constructor with no arguments?
-// @JulianArmandVanasse: What we talk about when we talk about ola_size?
 PhaseVocodeur::PhaseVocodeur()
 {
     init();
@@ -91,17 +88,14 @@ void PhaseVocodeur::init_ola()
     ola_out = juce::AudioBuffer<float> (num_ola_frames, ola_size);
     
     // clear
-    // @JulianArmandVanasse: Why? Cause residual junk maybe?
     ola_in.clear(); ola_out.clear();
     
     // initialize rw positions
     int pos = 0;
-    // @JulianArmandVanasse: Same Q^.
     rw.clear();
     for (int i = 0; i < num_ola_frames; i++)
     {
         rw.push_back(pos);
-        // @JulianArmandVanasse: Unclear on this, maybe knowing ola_size will help...
         pos += (hop_size % ola_size);
     }
 }
@@ -114,16 +108,13 @@ void PhaseVocodeur::init_window()
     // allocate memory and clear
     window = juce::AudioBuffer<float>(1, frame_size);
     window.clear();
+
     // fill using Hann function
-    
-    // @JulianArmandVannase: Why not `window[n]`?
     auto w = window.getWritePointer(0);
     
     float N = static_cast<float>(frame_size);
     for (int n = 0; n < frame_size; n++)
     {
-        // @JulianArmandVanasse: Where are `ceil` `pow` and `sin` comming from? <math.h>?
-        // @JulianArmandVanasse: Why not a for loop with a float? Is that weird?
         float fn = static_cast<float>(n);
         
         w[n] = pow(sin(M_PI * fn / N), 2.0f);
@@ -140,7 +131,7 @@ void PhaseVocodeur::init_fft()
     
     // initialize data storage
     
-    // @JulianArmandVanasse: I'm scared...
+    // Set the memory of (`fft_in`) to 0, specifying in bytes.
     memset(fft_in, 0, n_fft * sizeof(kiss_fft_cpx));
     memset(fft_out, 0, n_fft * sizeof(kiss_fft_cpx));
     
