@@ -5,10 +5,24 @@
     Created: 9 Dec 2020 9:19:32pm
     Author:  Julian Vanasse
 
+ By `push`ing into this class, the input is distributed among overlapping buffers,
+ this permits a frequency-domain processing and reconstruction.
+ 
+ Sound goes in via `push(float)`
+ Sound comes out via `read_sum()`
+ 
+ You can specify your own processing by overwriting the (?) method.
+ 
   ==============================================================================
 */
 
 #include "PhaseVocodeur.h"
+
+/*
+ ==============================================================================
+    Constructors
+ ==============================================================================
+*/
 
 PhaseVocodeur::PhaseVocodeur()
 {
@@ -48,7 +62,89 @@ PhaseVocodeur::PhaseVocodeur(int frame_size, int hop_size, int ola_size, int n_f
     init();
 }
 
-// ==============================================================================
+/*
+ ==============================================================================
+ Methods for initialization
+ ==============================================================================
+ */
+
+void PhaseVocodeur::init()
+{
+    /* Call all init subroutines */
+    init_ola();
+    init_window();
+    init_fft();
+}
+
+void PhaseVocodeur::init_ola()
+{
+    /* Initialize Overlap-Add (OLA) containers and rw positions */
+    
+    // assign number of frames based on overlap
+    num_ola_frames = ceil(static_cast<float>(ola_size) / static_cast<float>(hop_size));
+    
+    // allocate memory
+    ola_in = juce::AudioBuffer<float> (num_ola_frames, ola_size);
+    ola_out = juce::AudioBuffer<float> (num_ola_frames, ola_size);
+    
+    // clear
+    ola_in.clear(); ola_out.clear();
+    
+    // initialize rw positions
+    int pos = 0;
+    rw.clear();
+    for (int i = 0; i < num_ola_frames; i++)
+    {
+        rw.push_back(pos);
+        pos += (hop_size % ola_size);
+    }
+}
+
+void PhaseVocodeur::init_window()
+{
+    /* Initialize Hann window buffer. */
+    // Hann window is computed using the 'periodic' method.
+    
+    // allocate memory and clear
+    window = juce::AudioBuffer<float>(1, frame_size);
+    window.clear();
+
+    // fill using Hann function
+    auto w = window.getWritePointer(0);
+    
+    float N = static_cast<float>(frame_size);
+    for (int n = 0; n < frame_size; n++)
+    {
+        float fn = static_cast<float>(n);
+        
+        w[n] = pow(sin(M_PI * fn / N), 2.0f);
+    }
+}
+
+void PhaseVocodeur::init_fft()
+{
+    /* Initialize spectral containers and routines */
+    
+    // allocate space for input and output
+    fft_in = new kiss_fft_cpx[n_fft];
+    fft_out = new kiss_fft_cpx[n_fft];
+    
+    // initialize data storage
+    
+    // Set the memory of (`fft_in`) to 0, specifying in bytes.
+    memset(fft_in, 0, n_fft * sizeof(kiss_fft_cpx));
+    memset(fft_out, 0, n_fft * sizeof(kiss_fft_cpx));
+    
+    // initialize plans
+    fft_forward = kiss_fft_alloc(n_fft, 0, 0, 0);
+    fft_inverse = kiss_fft_alloc(n_fft, 1, 0, 0);
+}
+
+/*
+ ==============================================================================
+ Destructor.
+ ==============================================================================
+ */
 
 PhaseVocodeur::~PhaseVocodeur()
 {
@@ -59,29 +155,25 @@ PhaseVocodeur::~PhaseVocodeur()
     delete[] fft_out;
 }
 
-// ==============================================================================
+/*
+ ==============================================================================
+ Writing and reading.
+ ==============================================================================
+ */
 
 void PhaseVocodeur::push(float input_sample)
 {
-    /* write to buffers */
+    // Takes input sample and writes it into all the write buffers.
     auto ola_in_w = ola_in.getArrayOfWritePointers();
+    
     for (int b = 0; b < num_ola_frames; b++)
     {
         ola_in_w[b][rw[b]] = input_sample;
-        // IF rw[b] is at the end of a frame THEN process
+        // IF rw[b] is at the end of a frame THEN process.
         if (rw[b] == ola_size-1)
         {
             spectral_routine(b);
         }
-    }
-}
-
-void PhaseVocodeur::advance()
-{
-    /* advances rw positions */
-    for (int k = 0; k < rw.size(); k++)
-    {
-        rw[k] = (rw[k] + 1) % ola_size;
     }
 }
 
@@ -97,9 +189,22 @@ float PhaseVocodeur::read_sum()
     return s;
 }
 
-// ==============================================================================
+void PhaseVocodeur::advance()
+{
+    /* advances rw positions */
+    for (int k = 0; k < rw.size(); k++)
+    {
+        rw[k] = (rw[k] + 1) % ola_size;
+    }
+}
 
+/*
+ ==============================================================================
+ Spectral processing.
+ ==============================================================================
+ */
 
+// Shell for spectral processing: transfers to and from spectral domain.
 void PhaseVocodeur::spectral_routine(int b)
 {
     // pointers
@@ -125,6 +230,7 @@ void PhaseVocodeur::spectral_routine(int b)
     copy_to_bfr(ola_out_w, fft_in, n_fft);
 }
 
+// Processing in the frequency domain.
 void PhaseVocodeur::spectral_processing()
 {
     // bins: DC, 1, 2, ..., Nyquist
@@ -147,7 +253,6 @@ void PhaseVocodeur::spectral_processing()
     /* return to cartesian */
     pol2car(fft_out, magnitude, phase, num_bins);
 
-    
 //    std::ofstream out;
 //    out.open("post_fft.csv", std::ios::app);
 //    for (int n = 0; n < n_fft; n++)
@@ -163,36 +268,6 @@ void PhaseVocodeur::spectral_processing()
 //    }
 }
 
-
-// ==============================================================================
-
-void PhaseVocodeur::print()
-{
-    printf("Phase Vocodeur:\n");
-    // print parameters
-    printf("\tframe_size:\n");
-    printf("\t\t%d\n", frame_size);
-    printf("\thop_size:\n");
-    printf("\t\t%d\n", hop_size);
-    printf("\tn_fft:\n");
-    printf("\t\t%d\n", n_fft);
-    // print ola container dimensions
-    printf("\tola_in:\n");
-    printf("\t\tsize = [%d, %d]\n", ola_in.getNumChannels(), ola_in.getNumSamples());
-    printf("\tola_out:\n");
-    printf("\t\tsize = [%d, %d]\n", ola_out.getNumChannels(), ola_out.getNumSamples());
-    printf("\trw:\n");
-    // print rw positions
-    printf("\t\t");
-    print_int_vector(rw);
-    printf("\n");
-    // print window dimensions
-    printf("\twindow:\n");
-    printf("\t\tsize = [%d, %d]\n", window.getNumChannels(), window.getNumSamples());
-}
-
-// ==============================================================================
-/* spectral processing */
 void PhaseVocodeur::apply_window(const float *r, float *w)
 {
     /* apply window to a buffer */
@@ -203,7 +278,45 @@ void PhaseVocodeur::apply_window(const float *r, float *w)
     }
 }
 
-/* spectral helpers */
+/*
+ ==============================================================================
+ Spectral utility.
+ ==============================================================================
+ */
+
+/* coordinate conversion */
+void PhaseVocodeur::car2pol(kiss_fft_cpx *cpx_out, float *r, float *p, int len)
+{
+    for (int k = 0; k < len; k++)
+    {
+        r[k] = mag(cpx_out[k].r, cpx_out[k].i);
+        p[k] = ang(cpx_out[k].r, cpx_out[k].i);
+    }
+}
+
+void PhaseVocodeur::pol2car(kiss_fft_cpx *cpx_out, float *r, float *p, int len)
+{
+    for (int k = 0; k < len; k++)
+    {
+        cpx_out[k].r = cos(p[k])*r[k]*2.0f;
+        cpx_out[k].i = sin(p[k])*r[k]*2.0f;
+    }
+    // negative frequencies
+    int m = num_bins-2;
+    for (int k = num_bins; k < n_fft; k++)
+    {
+        cpx_out[k].r = cpx_out[m].r;
+        cpx_out[k].i = -cpx_out[m].i;
+        m--;
+    }
+}
+
+/*
+ ==============================================================================
+ Copying/Clearing Buffers.
+ ==============================================================================
+ */
+
 void PhaseVocodeur::clear_cpx()
 {
     /* clear complex kiss_fft buffers */
@@ -241,100 +354,33 @@ void PhaseVocodeur::copy_to_bfr(float *w, kiss_fft_cpx *cpx_in, int len)
     
 }
 
-/* coordinate conversion */
-void PhaseVocodeur::car2pol(kiss_fft_cpx *cpx_out, float *r, float *p, int len)
+/*
+ ==============================================================================
+ Class utility.
+ ==============================================================================
+ */
+
+void PhaseVocodeur::print()
 {
-    for (int k = 0; k < len; k++)
-    {
-        r[k] = mag(cpx_out[k].r, cpx_out[k].i);
-        p[k] = ang(cpx_out[k].r, cpx_out[k].i);
-    }
-}
-
-void PhaseVocodeur::pol2car(kiss_fft_cpx *cpx_out, float *r, float *p, int len)
-{
-    for (int k = 0; k < len; k++)
-    {
-        cpx_out[k].r = cos(p[k])*r[k]*2.0f;
-        cpx_out[k].i = sin(p[k])*r[k]*2.0f;
-    }
-    // negative frequencies
-    int m = num_bins-2;
-    for (int k = num_bins; k < n_fft; k++)
-    {
-        cpx_out[k].r = cpx_out[m].r;
-        cpx_out[k].i = -cpx_out[m].i;
-        m--;
-    }
-}
-
-// ==============================================================================
-
-void PhaseVocodeur::init_fft()
-{
-    /* Initialize spectral containers and routines */
-    
-    // allocate space for input and output
-    fft_in = new kiss_fft_cpx[n_fft];
-    fft_out = new kiss_fft_cpx[n_fft];
-    
-    // initialize data storage
-    memset(fft_in, 0, n_fft * sizeof(kiss_fft_cpx));
-    memset(fft_out, 0, n_fft * sizeof(kiss_fft_cpx));
-    
-    // initialize plans
-    fft_forward = kiss_fft_alloc(n_fft, 0, 0, 0);
-    fft_inverse = kiss_fft_alloc(n_fft, 1, 0, 0);
-}
-
-void PhaseVocodeur::init_ola()
-{
-    /* Initialize Overlap-Add (OLA) containers and rw positions */
-    
-    // assign number of frames based on overlap
-    num_ola_frames = ceil(static_cast<float>(ola_size) / static_cast<float>(hop_size));
-    
-    // allocate memory
-    ola_in = juce::AudioBuffer<float> (num_ola_frames, ola_size);
-    ola_out = juce::AudioBuffer<float> (num_ola_frames, ola_size);
-    
-    // clear
-    ola_in.clear(); ola_out.clear();
-    
-    // initialize rw positions
-    int pos = 0;
-    rw.clear();
-    for (int i = 0; i < num_ola_frames; i++)
-    {
-        rw.push_back(pos);
-        pos += (hop_size % ola_size);
-    }
-}
-
-void PhaseVocodeur::init_window()
-{
-    /* Initialize Hann window buffer. */
-    // Hann window is computed using the 'periodic' method.
-    
-    // allocate memory and clear
-    window = juce::AudioBuffer<float>(1, frame_size);
-    window.clear();
-    // fill using Hann function
-    auto w = window.getWritePointer(0);
-    float N = static_cast<float>(frame_size);
-    for (int n = 0; n < frame_size; n++)
-    {
-        float fn = static_cast<float>(n);
-        w[n] = pow(sin(M_PI * fn / N), 2.0f);
-    }
-}
-
-// =========================================================================
-
-void PhaseVocodeur::init()
-{
-    /* Call all init subroutines */
-    init_ola();
-    init_window();
-    init_fft();
+    printf("Phase Vocodeur:\n");
+    // print parameters
+    printf("\tframe_size:\n");
+    printf("\t\t%d\n", frame_size);
+    printf("\thop_size:\n");
+    printf("\t\t%d\n", hop_size);
+    printf("\tn_fft:\n");
+    printf("\t\t%d\n", n_fft);
+    // print ola container dimensions
+    printf("\tola_in:\n");
+    printf("\t\tsize = [%d, %d]\n", ola_in.getNumChannels(), ola_in.getNumSamples());
+    printf("\tola_out:\n");
+    printf("\t\tsize = [%d, %d]\n", ola_out.getNumChannels(), ola_out.getNumSamples());
+    printf("\trw:\n");
+    // print rw positions
+    printf("\t\t");
+    print_int_vector(rw);
+    printf("\n");
+    // print window dimensions
+    printf("\twindow:\n");
+    printf("\t\tsize = [%d, %d]\n", window.getNumChannels(), window.getNumSamples());
 }
