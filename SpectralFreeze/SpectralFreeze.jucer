@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="IypXIx" name="SpectralFreeze" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
+  <MAINGROUP id="BrjCGW" name="SpectralFreeze">
+    <GROUP id="{61CD0B2D-3D2C-5AD5-1FCF-85649C5F1E7E}" name="Source">
+      <GROUP id="{F08D7BC8-19AE-7386-E3ED-5408FE4F6034}" name="BarGraph">
+        <FILE id="m6dhWp" name="BarGraph.cpp" compile="1" resource="0" file="Source/BarGraph/BarGraph.cpp"/>
+        <FILE id="o8oI5z" name="BarGraph.h" compile="0" resource="0" file="Source/BarGraph/BarGraph.h"/>
+      </GROUP>
+      <GROUP id="{456FB0FB-F0CE-BBF3-FB2E-5EF9E2F22CC8}" name="Windows">
+        <FILE id="VyQdTR" name="Windows.cpp" compile="1" resource="0" file="Source/Windows/Windows.cpp"/>
+        <FILE id="qQtT1S" name="Windows.h" compile="0" resource="0" file="Source/Windows/Windows.h"/>
+      </GROUP>
+      <GROUP id="{0781AF29-1FD7-FE5C-C4A1-F3F183DB3305}" name="VectorOperations2">
+        <FILE id="abhLoi" name="VectorOperations2.cpp" compile="1" resource="0"
+              file="Source/VectorOperations2/VectorOperations2.cpp"/>
+        <FILE id="WEzX5S" name="VectorOperations2.h" compile="0" resource="0"
+              file="Source/VectorOperations2/VectorOperations2.h"/>
+      </GROUP>
+      <GROUP id="{DECF32BA-520F-B9B9-550D-7783115D50AA}" name="PhaseVocodeur3">
+        <FILE id="K46ZTR" name="PhaseVocodeur3.cpp" compile="1" resource="0"
+              file="Source/PhaseVocodeur3/PhaseVocodeur3.cpp"/>
+        <FILE id="n5KlyA" name="PhaseVocodeur3.h" compile="0" resource="0"
+              file="Source/PhaseVocodeur3/PhaseVocodeur3.h"/>
+      </GROUP>
+      <GROUP id="{10A75AD0-0D4D-C1E5-2C01-9D5D1A25D2A4}" name="kiss_fft">
+        <GROUP id="{E9B032EF-1D9D-29AE-FC0D-CC27B3AD0C02}" name="test"/>
+        <GROUP id="{61E356DB-E3DD-5092-2544-5C56FB18EA0B}" name="tools"/>
+        <FILE id="hydtsr" name="_kiss_fft_guts.h" compile="0" resource="0"
+              file="Source/kiss_fft/_kiss_fft_guts.h"/>
+        <FILE id="dRvAhd" name="CHANGELOG" compile="0" resource="1" file="Source/kiss_fft/CHANGELOG"/>
+        <FILE id="yEv4bC" name="COPYING" compile="0" resource="1" file="Source/kiss_fft/COPYING"/>
+        <FILE id="g7Dlbn" name="kiss_fft.c" compile="1" resource="0" file="Source/kiss_fft/kiss_fft.c"/>
+        <FILE id="EeuBp2" name="kiss_fft.h" compile="0" resource="0" file="Source/kiss_fft/kiss_fft.h"/>
+        <FILE id="D7PAWE" name="kissfft.hh" compile="0" resource="0" file="Source/kiss_fft/kissfft.hh"/>
+        <FILE id="TDpV9y" name="Makefile" compile="0" resource="1" file="Source/kiss_fft/Makefile"/>
+        <FILE id="NnUDio" name="README" compile="0" resource="1" file="Source/kiss_fft/README"/>
+        <FILE id="Ocw1AV" name="README.simd" compile="0" resource="1" file="Source/kiss_fft/README.simd"/>
+        <FILE id="yvBAPz" name="TIPS" compile="0" resource="1" file="Source/kiss_fft/TIPS"/>
+      </GROUP>
+      <GROUP id="{6FEB0195-DAF7-1C03-654D-3C4574A77030}" name="JVFreezer">
+        <FILE id="AEHha0" name="JVFreezer.cpp" compile="1" resource="0" file="Source/JVFreezer/JVFreezer.cpp"/>
+        <FILE id="VjsaPh" name="JVFreezer.h" compile="0" resource="0" file="Source/JVFreezer/JVFreezer.h"/>
+      </GROUP>
+      <FILE id="BDI2Gi" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="KQwaKj" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="TG91CZ" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="aIqFjv" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="SpectralFreeze" headerPath="/usr/local/include"
+                       libraryPath="/usr/local/lib"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="SpectralFreeze"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../../../JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>
